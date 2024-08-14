@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>이미지확대</title>
+        <script>
+            window.addEventListener("DOMContentLoaded", () => {
+                // 대상: 작은이미지박스 - .sm-box
+                const smBox = document.querySelector(".sm-box");
+                // 대상: 큰이미지 - .big-box img
+                const bigBoxImg = document.querySelector(".big-box img");
+
+                // 박스가로크기
+                let bxW = smBox.clientWidth;
+                // 박스세로크기
+                let bxH = smBox.clientHeight;
+                // X축범위값 : 큰이미지가로크기 - 박스가로크기
+                let rangeX = bigBoxImg.clientWidth - bxW;
+                // Y축범위값 : 큰이미지세로크기 - 박스세로크기
+                let rangeY = bigBoxImg.clientHeight - bxH;
+                console.log("rangeX:", rangeX, "\nrangeY:", rangeY);
+                // 수식 : 이미지이동값 x
+                // 박스가로크기 : X축범위값 = 박스커서위치값 : X축이동값
+                // X축이동값 = X축범위값 * 박스커서위치값 / 박스가로크기
+
+                // 계산값 리턴함수 : cp - 커서포지션값 / dir - 방향(x/y)
+                const retPosVal = (cp, dir) => 
+                (dir == "x" ? (rangeX * cp) / bxW : (rangeY * cp) / bxH);
+
+                // [ 이벤트함수 설정하기]
+                // 이벤트 종류 : mousemove
+                // 이벤트 대상 : smBox
+                smBox.addEventListener("mousemove", (e) => {
+                    let posX = e.offsetX > 0 ? e.offsetX : 0;
+                    let posY = e.offsetY > 0 ? e.offsetY : 0;
+                    console.log("x:", -retPosVal(posX, "x"), "\ny:", -retPosVal(posY, "y"));
+
+                    let resX = -retPosVal(posX, "x");
+                    if(resX<-rangeX) resX = -rangeX;
+                    let resY = -retPosVal(posY, "y");
+                    if(resY<-rangeY) resY = -rangeY;
+
+                    // 큰이미지 위치이동하기
+                    // 대상 : bigBoxImg
+                    bigBoxImg.style.left = resX + "px";
+                    bigBoxImg.style.top = resY + "px";
+                });
+
+                // 너무나 명확한 구분글 : pageX,clientX,offsetX,screenX
+                // https://mong-blog.tistory.com/entry/clientX-offsetX-pageX-screenX-%EC%B0%A8%EC%9D%B4
+            });
+        </script>
+        <style>
+            :root {
+                --bd-size: 10px;
+            }
+            .img-set-box {
+                position: relative;
+                width: 30vw;
+                aspect-ratio: 1187/1701;
+            }
+            .sm-box {
+                position: relative;
+                width: 30vw;
+                aspect-ratio: 1187/1701;
+                border: var(--bd-size) ridge goldenrod;
+                background: url(./images/drag_bg.jpg) 0/100%;
+            }
+            .big-box {
+                position: absolute;
+                top: 0;
+                left: 105%;
+                width: 0;
+                height: 0;
+                overflow: hidden;
+                border: var(--bd-size) solid transparent;
+                opacity: 0;
+                transition: opacity .4s;
+            }
+            .img-set-box:hover .big-box{
+                width: 30vw;
+                height: auto;
+                aspect-ratio: 1187/1701;
+                opacity: 1;
+            }
+            .big-box img {
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="img-set-box">
+            <div class="sm-box"></div>
+            <div class="big-box">
+                <img src="./images/drag_bg.jpg" alt="original image" />
+            </div>
+        </div>
+    </body>
+</html>
