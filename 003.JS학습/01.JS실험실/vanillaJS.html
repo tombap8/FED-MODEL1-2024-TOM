@@ -5,14 +5,38 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Vanilla JS</title>
         <script>
-            function chgImg() {
-                console.log('ㅎㅎ');
-                var s = document.getElementById("tgImg").style;
+            let optV = true;
+            let s;
+            window.addEventListener("DOMContentLoaded",()=>{
+                s = document.getElementById("tgImg").style;
                 s.opacity = 1;
-                (function fade() {
-                    (s.opacity -= 0.1) < 0 ? (s.display = "none") : setTimeout(fade, 60);
-                    console.log(s.opacity);
-                })();
+            })
+            function chgImg() {
+                 if(optV){
+                console.log('ㅎㅎ',optV);
+                     (function fade() {
+                         (s.opacity -= 0.1) < 0 ? (s.display = "none") : setTimeout(fade, 60);
+                         console.log(s.opacity);
+                         if(s.display == "none") optV = false;
+                        })();
+                        
+                    }
+                    else{
+                        // s.opacity = 0;
+                        (function fade2() {
+                            console.log('ㅋㅋ',optV);
+                            s.opacity += 0.1
+                            console.log(s.opacity);
+                        if(s.opacity >= -0.1 && s.opacity < 1){
+                            s.display = "block";
+                            setTimeout(fade2, 60);
+                        }
+                        else{
+                            optV = true;
+                        }
+
+                     })();
+                 }
             }
         </script>
     </head>
