@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Vanilla JS</title>
+        <script>
+            function chgImg() {
+                console.log('ㅎㅎ');
+                var s = document.getElementById("tgImg").style;
+                s.opacity = 1;
+                (function fade() {
+                    (s.opacity -= 0.1) < 0 ? (s.display = "none") : setTimeout(fade, 60);
+                    console.log(s.opacity);
+                })();
+            }
+        </script>
+    </head>
+    <body>
+        <button onclick="chgImg()">변경</button> <br><br>
+        <img id="tgImg" src="https://i.natgeofe.com/n/2a832501-483e-422f-985c-0e93757b7d84/6.jpg?w=2560&h=1922" alt="landscape" style="width: 100%;" />
+    </body>
+</html>
